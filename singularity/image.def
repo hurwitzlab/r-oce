@@ -1,0 +1,28 @@
+BootStrap: docker
+From: r-base:latest
+
+%runscript
+    exec plot.r
+
+%post
+    mkdir /app
+    cd /app
+    git clone https://github.com/hurwitzlab/r-oce.git
+
+    #
+    # Install R modules (need the .Rprofile to indicate CRAN mirror)
+    #
+    cat << EOF > .Rprofile
+local({
+  r = getOption("repos")
+  r["CRAN"] = "http://mirrors.nics.utk.edu/cran/"
+  options(repos = r)
+})
+EOF
+
+    Rscript /app/r-oce/scripts/install.r
+  
+    # Mount points for TACC directories
+    mkdir /home1
+    mkdir /scratch
+    mkdir /work
