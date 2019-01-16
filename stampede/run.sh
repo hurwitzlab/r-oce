@@ -20,7 +20,7 @@ function HELP() {
 
 [[ $# -ne 1 ]] && HELP
 
-singularity exec $IMG $1
+singularity exec $IMG plot.r $1
 
 echo "Done."
 echo "Comments to Ken Youens-Clark <kyclark@email.arizona.edu>"
