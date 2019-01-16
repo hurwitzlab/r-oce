@@ -1,10 +1,16 @@
 BootStrap: docker
-From: r-base:latest
+From: r-base:3.5.2
+
+%environment
+    PATH=/app/r-oce/scripts:$PATH
 
 %runscript
-    exec plot.r
+    exec Rscript /app/r-oce/scripts/plot.r
 
 %post
+    apt-get update
+    apt-get install git -y
+
     mkdir /app
     cd /app
     git clone https://github.com/hurwitzlab/r-oce.git

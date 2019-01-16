@@ -9,7 +9,9 @@ clean:
 	rm -f $(IMG)
 
 img: clean
-	sudo $(SINGULARITY) build $(IMG) $(DEF)
+	#sudo $(SINGULARITY) build $(IMG) $(DEF)
+	sudo $(SINGULARITY) create --size 1048 $(IMG)
+	sudo $(SINGULARITY) bootstrap $(IMG) $(DEF)
 
 shell:
 	sudo $(SINGULARITY) shell --writable -B $(shell pwd):/home $(IMG)

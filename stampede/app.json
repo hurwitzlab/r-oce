@@ -1,0 +1,64 @@
+{
+    "name": "r-oce",
+    "version": "0.0.1",
+    "shortDescription": "Run R OCE plotting program.",
+    "longDescription": "",
+    "available": true,
+    "checkpointable": false,
+    "defaultMemoryPerNode": 192,
+    "defaultProcessorsPerNode": 48,
+    "defaultMaxRunTime": "12:00:00",
+    "defaultNodeCount": 1,
+    "defaultQueue": "normal",
+    "deploymentPath": "kyclark/applications/app_name-version/stampede",
+    "deploymentSystem": "data.iplantcollaborative.org",
+    "executionSystem": "tacc-stampede2-kyclark",
+    "executionType": "HPC",
+    "helpURI": "https://cran.r-project.org/web/packages/oce/vignettes/oce.html",
+    "label": "R OCE",
+    "parallelism": "serial",
+    "templatePath": "template.sh",
+    "testPath": "test.sh",
+    "modules": [
+        "tacc-singularity",
+        "launcher"
+    ],
+    "tags": [
+        "imicrobe"
+    ],
+    "ontology": [
+        "http://sswapmeet.sswap.info/agave/apps/Application"
+    ],
+    "inputs": [
+        {
+            "id": "INPUT_FILE",
+            "value": {
+                "default": "",
+                "order": 1,
+                "validator": "",
+                "required": true,
+                "visible": true,
+                "enquote": false
+            },
+            "semantics": {
+                "ontology": [
+                    "http://sswapmeet.sswap.info/mime/application/X-bam"
+                ],
+                "minCardinality": 1,
+                "maxCardinality": -1,
+                "fileTypes": [
+                    "raw-0"
+                ]
+            },
+            "details": {
+                "description": "",
+                "label": "Input file",
+                "argument": "",
+                "repeatArgument": false,
+                "showArgument": false
+            }
+        }
+    ],
+    "parameters": [],
+    "outputs": []
+}
