@@ -1,0 +1,37 @@
+{
+  "name":"r-oce test-1547674708",
+  "appId": "r-oce-0.0.1",
+  "batchQueue": "normal",
+  "executionSystem": "tacc-stampede2-kyclark",
+  "maxRunTime": "12:00:00",
+  "memoryPerNode": "92GB",
+  "nodeCount": 1,
+  "processorsPerNode": 48,
+  "archive": true,
+  "archiveSystem": "data.iplantcollaborative.org",
+  "archivePath": null,
+  "inputs": {
+    "INPUT_FILE": [ 
+      "/kyclark/data/r-oce/x00.input.csv"
+    ]
+  },
+  "parameters": {
+  },
+  "notifications": [
+    {
+      "url":"https://requestbin.agaveapi.co/wgbv4kwg?job_id=${JOB_ID}&status=${JOB_STATUS}",
+      "event":"*",
+      "persistent":true
+    },
+    {
+      "url":"kyclark@gmail.com",
+      "event":"FINISHED",
+          "persistent":false
+    },
+    {
+      "url":"kyclark@gmail.com",
+      "event":"FAILED",
+      "persistent":false
+    }
+  ]
+}
