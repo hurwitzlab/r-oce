@@ -46,6 +46,22 @@ def get_args():
         default='blastn')
 
     parser.add_argument(
+        '-i',
+        '--perc_identity',
+        help='BLAST percent identity',
+        metavar='float',
+        type=float,
+        default=0.)
+
+    parser.add_argument(
+        '-c',
+        '--qcov_hsp_perc',
+        help='BLAST percent query coverage per hsp',
+        metavar='float',
+        type=float,
+        default=0.)
+
+    parser.add_argument(
         '-o',
         '--outdir',
         help='Output directory',
@@ -83,7 +99,12 @@ def main():
 
     print('Running BLAST')
     hits = run_blast(
-        blast_db=blast_db, blast_prg=blast_prg, query=query, out_dir=out_dir)
+        blast_db=blast_db,
+        blast_prg=blast_prg,
+        perc_identity=args.perc_identity,
+        qcov_hsp_perc=args.qcov_hsp_perc,
+        query=query,
+        out_dir=out_dir)
 
     print('CMAP query')
     centroids_file = cmap_query(blast_hits=hits, out_dir=out_dir)
@@ -96,16 +117,27 @@ def main():
 
 # --------------------------------------------------
 def plot(centroids_file, out_dir):
-    rv, out = getstatusoutput('./plot-all-types.R {}'.format(centroids_file))
-    print(out)
+    """Given CMAP location data, plot distribution"""
 
-    if rv != 0:
-        die('Error plotting ({}):\n{}\n'.format(rv, out))
+    cwd = os.path.abspath(os.path.dirname(sys.argv[0]))
+    plot = os.path.join(cwd, 'plot.r')
 
-    return 1
+    if os.path.isfile(plot):
+        rv, out = getstatusoutput('{} {}'.format(plot, centroids_file))
+        print(out)
+
+        if rv == 0:
+            return 1
+        else:
+            die('Error plotting ({}):\n{}\n'.format(rv, out))
+    else:
+        die('Cannot find "{}"'.format(plot))
+
 
 # --------------------------------------------------
 def cmap_query(blast_hits, out_dir):
+    """Given BLAST hits, query CMAP for location"""
+
     out_file = os.path.join(out_dir, 'oce-input.csv')
     out_fh = open(out_file, 'wt')
     out_fh.write(','.join([
@@ -133,22 +165,33 @@ def cmap_query(blast_hits, out_dir):
 
             df = db.dbFetch(query.format(seq_id))
             for i, row in df.iterrows():
-                out_fh.write(','.join(map(str, [
-                    row['lat'], row['lon'], row['depth'],
-                    row['relative_abundance'], row['relative_abundance'],
-                    row['esv_salinity']
-                )) + '\n')
-
+                out_fh.write(','.join(
+                    map(str, [
+                        row['lat'], row['lon'], row['depth'],
+                        row['relative_abundance'], row['relative_abundance'],
+                        row['esv_salinity']
+                    ])) + '\n')
 
     out_fh.close()
     return out_file
 
 
 # --------------------------------------------------
-def run_blast(blast_db, blast_prg, query, out_dir):
+def run_blast(blast_db, blast_prg, query, perc_identity, qcov_hsp_perc,
+              out_dir):
+    """Given user query and params, run BLAST"""
+
     hits_file = os.path.join(out_dir, 'hits.tab')
+
     cmd = '{} -query {} -db {} -out {} -outfmt 6'.format(
         blast_prg, query, blast_db, hits_file)
+
+    if perc_identity > 0.:
+        cmd += ' -perc_identity {}'.format(perc_identity)
+
+    if qcov_hsp_perc > 0.:
+        cmd += ' -qcov_hsp_perc {}'.format(qcov_hsp_perc)
+
     (rv, blast_out) = getstatusoutput(cmd)
 
     if rv == 0:
