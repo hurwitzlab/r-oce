@@ -4,7 +4,13 @@ This app seek to answer the question:
 
 > "Given a 16S/18S sequence for my organism of interest, what information can I retrieve on its geographic distribution from the CMAP database?"
 
-The input is a FASTA file of 16S sequences which are BLASTed to find hits which are then used to query the CMAP (https://cmap.readthedocs.io/en/latest/catalog/catalog.html) database using the Python "Opedia" (https://pypi.org/project/opedia/) to find the geographic information which is visualized using the R "Oce" (https://cran.r-project.org/web/packages/oce/vignettes/oce.html) module. The output of the application is set of PNG files.
+The input is a FASTA file of 16S sequences which are BLASTed to find hits which are then used to query the CMAP database using the Python "Opedia" to find the geographic information which is visualized using the R "Oce" module. The output of the application is set of PNG files.
+
+Cf.:
+
+* https://cmap.readthedocs.io/en/latest/catalog/catalog.html
+* https://pypi.org/project/opedia/
+* https://cran.r-project.org/web/packages/oce/vignettes/oce.html
 
 # Local Installation
 
@@ -45,7 +51,7 @@ A Singularity image with all dependencies is available on Stampede2 in the share
 
 # Run Online
 
-We have created a CyVerse/Stampede2 app that can be run from the iMicrobe.us (https://www.imicrobe.us/#/apps/83)
+If you have a CyVerse account, you can run the app on the Stampede2 cluster at TACC via iMicrobe (https://www.imicrobe.us/#/apps/83).
 
 # Run via CyVerse
 
@@ -100,5 +106,5 @@ $ jobs-output-get -r <job-id>
 # Authors
 
 * Jesse McNichol <mcnichol@alum.mit.edu>
-* Mohammad Ashkezari <mdehghan@uw.edu>
+* Mohammad Ashkezari <mdehghan@uw.edu> 
 * Ken Youens-Clark <kyclark@email.arizona.edu>
